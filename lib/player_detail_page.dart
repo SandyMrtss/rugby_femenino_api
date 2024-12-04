@@ -25,7 +25,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
               Flexible(
                 flex: 1,
                 child: Slider(
-                  activeColor: const Color(0xFF0B479E),
                   min: 0.0,
                   max: 10.0,
                   value: _sliderValue,
@@ -41,7 +40,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
                   alignment: Alignment.center,
                   child: Text(
                     '${_sliderValue.toInt()}',
-                    style: const TextStyle(color: Colors.black, fontSize: 25.0),
+                    style: const TextStyle(fontSize: 25.0),
                   )),
             ],
           ),
@@ -66,11 +65,11 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Error!'),
-            content: const Text("Come on! They're good!"),
+            title: const Text('¿Estás seguro?'),
+            content: const Text('No puedes suspender a una jugadora de este nivel...'),
             actions: <Widget>[
               TextButton(
-                child: const Text('Try Again'),
+                child: const Text('Entendido'),
                 onPressed: () => Navigator.of(context).pop(),
               )
             ],
@@ -81,7 +80,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
   Widget get submitRatingButton {
     return ElevatedButton(
       onPressed: () => updateRating(),
-      child: const Text('Submit'),
+      child: const Text('Guardar'),
     );
   }
 
@@ -99,7 +98,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
               BoxShadow(offset: Offset(2.0, 1.0), blurRadius: 3.0, spreadRadius: 0.0, color: Color(0x24000000)),
               BoxShadow(offset: Offset(3.0, 1.0), blurRadius: 4.0, spreadRadius: 2.0, color: Color(0x1f000000))
             ],
-            image: DecorationImage(fit: BoxFit.cover, alignment: Alignment.topCenter, image: NetworkImage(widget.player.imageUrl ?? ""))),
+            image: DecorationImage(fit: BoxFit.cover, alignment: Alignment.topCenter, image: NetworkImage(widget.player.imageUrl ?? ''))),
       ),
     );
   }
@@ -111,9 +110,9 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
         const Icon(
           Icons.star,
           size: 40.0,
-          color: Colors.black,
+          color: Colors.amberAccent,
         ),
-        Text('${widget.player.rating}/10', style: const TextStyle(color: Colors.black, fontSize: 30.0))
+        Text('${widget.player.rating}/10', style: const TextStyle(fontSize: 30.0))
       ],
     );
   }
@@ -125,16 +124,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
   Widget get playerProfile {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 32.0),
-      decoration: const BoxDecoration(
-        color: Color(0xFFABCAED),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           playerImage,
-          Text(widget.player.name, style: const TextStyle(color: Colors.black, fontSize: 32.0)),
-          Text(widget.player.position.toString(), style: const TextStyle(color: Colors.black, fontStyle: FontStyle.italic, fontSize: 20.0)),
-          Text('${widget.player.totalCaps} caps', style: const TextStyle(color: Colors.black, fontSize: 20.0)),
+          Text(widget.player.name, style: const TextStyle(fontSize: 32.0,), textAlign: TextAlign.center,),
+          Text(widget.player.position.toString(), style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 20.0)),
+          Text('${widget.player.totalCaps} caps', style: const TextStyle(fontSize: 20.0)),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: rating,
@@ -153,10 +149,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFABCAED),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0B479E),
-        title: Text('Conoce a ${widget.player.name}'),
+       title: Text('Conoce a ${widget.player.name}'),
       ),
       body: ListView(
         children: <Widget>[playerProfile, addYourRating],

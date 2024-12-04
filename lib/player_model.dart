@@ -29,9 +29,9 @@ class Player {
       var responseBody = await response.transform(utf8.decoder).join();
 
       List data = json.decode(responseBody);
-      imageUrl = data[0]["img"];
-      totalCaps = data[0]["totalCaps"];
-      position = data[0]["position"];
+      imageUrl = data[0]['img'];
+      totalCaps = data[0]['totalCaps'];
+      position = data[0]['position'];
 
     } catch (exception) {
       debugPrint(exception as String?);

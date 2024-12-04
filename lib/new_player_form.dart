@@ -22,7 +22,7 @@ class _AddPlayerFormPageState extends State<AddPlayerFormPage> {
   static final List<String> _allPlayers = [];
 
   void addPlayer(BuildContext context) {
-    var newPlayer = Player(_formKey.currentState?.value["playerName"]);
+    var newPlayer = Player(_formKey.currentState?.value['playerName']);
     Navigator.of(context).pop(newPlayer);
   }
 
@@ -40,7 +40,7 @@ class _AddPlayerFormPageState extends State<AddPlayerFormPage> {
 
       List data = json.decode(responseBody);
       for(int i = 0; i < data.length; i++){
-        _allPlayers.add(data[i]["name"]);
+        _allPlayers.add(data[i]['name']);
       }
       // allPlayers.sort()
     } catch (exception) {
@@ -58,14 +58,14 @@ class _AddPlayerFormPageState extends State<AddPlayerFormPage> {
   }
 
   void checkText(){
-    if(nameController.text == "") return;
-    if(_formKey.currentState?.value["playerName"] != null) return;
+    if(nameController.text == '') return;
+    if(_formKey.currentState?.value['playerName'] != null) return;
     int index = containsCaseInsensitive(_allPlayers, nameController.text);
     if(index != -1 ){
-      _formKey.currentState?.fields["playerName"]?.didChange(_allPlayers[index]);
+      _formKey.currentState?.fields['playerName']?.didChange(_allPlayers[index]);
     }
     else{
-      _formKey.currentState?.fields["playerName"]?.didChange(nameController.text);
+      _formKey.currentState?.fields['playerName']?.didChange(nameController.text);
     }
   }
 
@@ -74,11 +74,9 @@ class _AddPlayerFormPageState extends State<AddPlayerFormPage> {
     getPlayerList();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add a new player'),
-        backgroundColor: const Color(0xFF0B479E),
+        title: const Text('Añadir jugadora'),
       ),
       body: Container(
-        color: const Color(0xFFABCAED),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
           child: Column(children: [
@@ -95,10 +93,7 @@ class _AddPlayerFormPageState extends State<AddPlayerFormPage> {
                       hideOnEmpty: true,
                       hideOnUnfocus: true,
                       decoration: InputDecoration(
-                        label: const Text(
-                          "Nombre jugadora",
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        label: const Text('Nombre jugadora',),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.clear, color: Colors.white,),
                           onPressed: () {
@@ -115,8 +110,8 @@ class _AddPlayerFormPageState extends State<AddPlayerFormPage> {
                         );
                       },
                       validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(errorText: "Elige una jugadora"),
-                        FormBuilderValidators.containsElement(_allPlayers, errorText: "Jugadora desconocida")
+                        FormBuilderValidators.required(errorText: 'Elige una jugadora'),
+                        FormBuilderValidators.containsElement(_allPlayers, errorText: 'Jugadora desconocida')
                       ]),
                     ),
                   ),

@@ -12,9 +12,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Rugby XV España',
+      title: 'Rugby XV Femenino',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(brightness: Brightness.dark),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.red,
+        ),
+        fontFamily: 'Cambria',
+        appBarTheme: const AppBarTheme(
+            backgroundColor: Color.fromRGBO(186, 0, 0, 100),
+            centerTitle: true,
+            foregroundColor: Colors.white,
+        ),
+      ),
+
       home: const MyHomePage(
         title: 'Selección Femenina Rugby XV',
       ),
@@ -63,18 +74,15 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       key: key,
       appBar: AppBar(
-        title: Text(widget.title, style: const TextStyle(color: Colors.white)),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF0B479E),
+        title: Text(widget.title),
       ),
       body: Container(
-          color: const Color.fromARGB(255, 88, 111, 137),
           child: Center(
             child: PlayerList(initialPlayers),
           )
       ),
       floatingActionButton: FloatingActionButton(
-        tooltip: "Añadir jugadora",
+        tooltip: 'Añadir jugadora',
         shape: const CircleBorder(),
         onPressed:_showNewPlayerForm,
         child: const Icon(

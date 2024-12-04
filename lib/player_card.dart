@@ -75,38 +75,35 @@ class _PlayerCardState extends State<PlayerCard> {
     return Positioned(
       right: 0.0,
       child: SizedBox(
-        width: 290,
+        width: 250,
         height: 115,
         child: Card(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-          color: const Color(0xFFF8F8F8),
           child: Padding(
-            padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
+            padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Text(
                   widget.player.name,
-                  style: const TextStyle(color: Color(0xFF000600), fontSize: 27.0),
-                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 24.0),
+                  overflow: TextOverflow.ellipsis,
                 ),
                 Row(
+         //         mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(widget.player.position.toString(),
-                      style: const TextStyle(color: Colors.black ,fontStyle: FontStyle.italic),
-                      textAlign: TextAlign.center,
-
-                    )
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ],
                 ),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    const Icon(Icons.star, color: Color(0xFF000600)),
-                    Text(': ${widget.player.rating}/10',
-                        style: const TextStyle(color: Color(0xFF000600), fontSize: 14.0),
-                        textAlign: TextAlign.center,
+                    const Icon(Icons.star, color: Colors.amber),
+                    Text('${widget.player.rating}/10',
+                        style: const TextStyle(fontSize: 14.0),
                     )
                   ],
                 )
@@ -134,8 +131,8 @@ class _PlayerCardState extends State<PlayerCard> {
           height: 115.0,
           child: Stack(
             children: <Widget>[
-              playerCard,
               Positioned(top: 7.5, child: playerImage),
+              playerCard,
             ],
           ),
         ),
