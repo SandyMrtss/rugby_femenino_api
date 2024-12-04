@@ -37,4 +37,17 @@ class Player {
       debugPrint(exception as String?);
     }
   }
+
+  @override
+  String toString() {
+    return 'Player{name: $name, imageUrl: $imageUrl, position: $position, totalCaps: $totalCaps, rating: $rating}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Player && runtimeType == other.runtimeType && name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
 }

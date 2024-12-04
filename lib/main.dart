@@ -36,11 +36,24 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Player> initialPlayers = [Player('Alba Capell'), Player('Claudia Peña'), Player('Martina Márquez')];
 
   Future _showNewPlayerForm() async {
-    Player newPlayer = await Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+    var newPlayer = await Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
       return const AddPlayerFormPage();
     }));
-    //print(newPlayer);
-    initialPlayers.add(newPlayer);
+    if(newPlayer != null){
+      if(!initialPlayers.contains(newPlayer)){
+        initialPlayers.add(newPlayer);
+      }
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Esta jugadora ya estaba añadida'),
+              duration: Duration(seconds: 3),
+              backgroundColor: Colors.red,
+              showCloseIcon: true,
+            )
+        );
+      }
+    }
     setState(() {});
   }
 

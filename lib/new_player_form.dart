@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'player_model.dart';
@@ -16,53 +17,19 @@ class AddPlayerFormPage extends StatefulWidget {
 
 class _AddPlayerFormPageState extends State<AddPlayerFormPage> {
   TextEditingController nameController = TextEditingController();
+  final _formKey = GlobalKey<FormBuilderState>();
   static const String apiBase = '673e0bb20118dbfe8609eb1e.mockapi.io';
-  static List allPlayers = [];
+  static final List<String> _allPlayers = [];
 
-  void submitPup(BuildContext context) {
-    if (nameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: Colors.redAccent,
-        content: Text('Introduce el nombre de la jugadora que quieres añadir'),
-      ));
-    }
-    else if(!allPlayers.contains(nameController.text)){
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: Colors.redAccent,
-        content: Text('Jugadora no conocida. Asegúrate de escribir el nombre correctamente'),
-      ));
-    }
-    else {
-      var newPlayer = Player(nameController.text);
-      Navigator.of(context).pop(newPlayer);
-    }
+  void addPlayer(BuildContext context) {
+    var newPlayer = Player(_formKey.currentState?.value["playerName"]);
+    Navigator.of(context).pop(newPlayer);
   }
 
-  /*Widget getAutocomplete(){
-    return FormBuilderTypeAhead<String>(
-      name: 'country',
-      initialValue: null,
-      decoration: const InputDecoration(
-        labelText: 'Which country are you visiting?',
-        border: OutlineInputBorder(
-          borderSide: BorderSide(width: 1),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        ),
-      ),
-      suggestionsCallback: (pattern) {
-        return allPlayers.where((country) => country.toLowerCase().startsWith(pattern.toLowerCase())).toList();
-      },
-      itemBuilder: (context, suggestion) {
-        return ListTile(
-          title: Text(suggestion),
-        );
-      },
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: FormBuilderValidators.required(),
-    ),
-  }*/
 
-  Future<void> getPlayerList() async {
+  void getPlayerList() async {
+    if(_allPlayers.isNotEmpty) return;
+
     HttpClient http = HttpClient();
 
     try {
@@ -73,18 +40,35 @@ class _AddPlayerFormPageState extends State<AddPlayerFormPage> {
 
       List data = json.decode(responseBody);
       for(int i = 0; i < data.length; i++){
-        allPlayers.add(data[i]["name"]);
+        _allPlayers.add(data[i]["name"]);
       }
-
+      // allPlayers.sort()
     } catch (exception) {
       print(exception);
     }
   }
 
-/*  void showPlayerList(){
-    print(allPlayers);
+  int containsCaseInsensitive(List list, String string){
+    for(int i = 0; i < list.length; i++){
+      if(list[i].trim().toLowerCase() == string.trim().toLowerCase()){
+         return i;
+      }
+    }
+    return - 1;
   }
-*/
+
+  void checkText(){
+    if(nameController.text == "") return;
+    if(_formKey.currentState?.value["playerName"] != null) return;
+    int index = containsCaseInsensitive(_allPlayers, nameController.text);
+    if(index != -1 ){
+      _formKey.currentState?.fields["playerName"]?.didChange(_allPlayers[index]);
+    }
+    else{
+      _formKey.currentState?.fields["playerName"]?.didChange(nameController.text);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     getPlayerList();
@@ -100,34 +84,56 @@ class _AddPlayerFormPageState extends State<AddPlayerFormPage> {
           child: Column(children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
-              child: TextField(
-                controller: nameController,
-                style: const TextStyle(decoration: TextDecoration.none),
-                onChanged: (v) => nameController.text = v,
-                decoration: const InputDecoration(
-                  labelText: 'Nombre jugadora',
-                  labelStyle: TextStyle(color: Colors.black),
-                ),
-              ),
+              child:
+                  FormBuilder(
+                    key: _formKey,
+                    onChanged: () {_formKey.currentState!.save();},
+                    child: FormBuilderTypeAhead<String>(
+                      name: 'playerName',
+                      initialValue: null,
+                      controller: nameController,
+                      hideOnEmpty: true,
+                      hideOnUnfocus: true,
+                      decoration: InputDecoration(
+                        label: const Text(
+                          "Nombre jugadora",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.clear, color: Colors.white,),
+                          onPressed: () {
+                            _formKey.currentState!.fields['playerName']?.didChange(null);
+                          }
+                        ),
+                      ),
+                      suggestionsCallback: (pattern) {
+                        return _allPlayers.where((country) => country.toLowerCase().startsWith(pattern.toLowerCase())).toList();
+                      },
+                      itemBuilder: (context, suggestion) {
+                        return ListTile(
+                          title: Text(suggestion),
+                        );
+                      },
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(errorText: "Elige una jugadora"),
+                        FormBuilderValidators.containsElement(_allPlayers, errorText: "Jugadora desconocida")
+                      ]),
+                    ),
+                  ),
             ),
-          /*  Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Builder(
-                builder: (context) {
-                  return ElevatedButton(
-                    onPressed: () => showPlayerList(),
-                    child: const Text('Help'),
-                  );
-                },
-              ),
-            ),*/
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Builder(
                 builder: (context) {
                   return ElevatedButton(
-                    onPressed: () => submitPup(context),
-                    child: const Text('Submit Player'),
+                    onPressed: () {
+                      checkText();
+                      if(_formKey.currentState!.saveAndValidate()){
+                        addPlayer(context);
+                      }
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
+                    child: const Text('Añadir jugadora'),
                   );
                 },
               ),
