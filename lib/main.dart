@@ -66,18 +66,20 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title, style: const TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xFF0B479E),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: _showNewPlayerForm,
-          ),
-        ],
       ),
       body: Container(
           color: const Color.fromARGB(255, 88, 111, 137),
           child: Center(
             child: PlayerList(initialPlayers),
           )
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: "Añadir jugadora",
+        shape: const CircleBorder(),
+        onPressed:_showNewPlayerForm,
+        child: const Icon(
+            Icons.add,
+        ),
       ),
     );
   }
