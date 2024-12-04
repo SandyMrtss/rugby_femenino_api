@@ -15,7 +15,7 @@ dependencies:
   flutter_form_builder: ^9.5.0
   form_builder_extra_fields: ^11.0.0
   form_builder_validators: ^11.0.0
-
+  flutter_launcher_icons: ^0.14.1
 
   cupertino_icons: ^1.0.8
 
@@ -27,3 +27,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "./assets/icon.png"
+  windows:
+    generate: true
+    image_path: "./assets/icon.png"
