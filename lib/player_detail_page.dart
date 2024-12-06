@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'player_model.dart';
+import 'package:intl/intl.dart';
 
 class PlayerDetailPage extends StatefulWidget {
   final Player player;
@@ -18,7 +19,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
     return Column(
       children: <Widget>[
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -121,6 +122,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
     initState();
     setState(() {});
   }
+
   Widget get playerProfile {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 32.0),
@@ -130,7 +132,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
           playerImage,
           Text(widget.player.name, style: const TextStyle(fontSize: 32.0,), textAlign: TextAlign.center,),
           Text(widget.player.position.toString(), style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 20.0)),
-          Text('${widget.player.totalCaps} caps', style: const TextStyle(fontSize: 20.0)),
+          Text('${widget.player.totalCaps} caps desde ${DateFormat('dd/MM/yyyy').format(widget.player.debut as DateTime)}', style: const TextStyle(fontSize: 20.0)),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: rating,

@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
 class Player {
   static const String apiBase = '673e0bb20118dbfe8609eb1e.mockapi.io';
+
   final String name;
   String? imageUrl;
   String? position;
+  DateTime? debut;
   int? totalCaps;
 
   int rating = 10;
@@ -32,15 +32,23 @@ class Player {
       imageUrl = data[0]['img'];
       totalCaps = data[0]['totalCaps'];
       position = data[0]['position'];
+      debut = dateFromString(data[0]['debut'].toString());
 
     } catch (exception) {
-      debugPrint(exception as String?);
+      print(exception);
     }
+  }
+
+  DateTime dateFromString(String date){
+    int year = int.parse(date.substring(0, 4));
+    int month = int.parse(date.substring(4, 6));
+    int day = int.parse(date.substring(6, 8));
+    return DateTime(year, month, day);
   }
 
   @override
   String toString() {
-    return 'Player{name: $name, imageUrl: $imageUrl, position: $position, totalCaps: $totalCaps, rating: $rating}';
+    return 'Player{name: $name, imageUrl: $imageUrl, position: $position, debut: $debut, totalCaps: $totalCaps, rating: $rating}';
   }
 
   @override
