@@ -42,7 +42,7 @@ class _AddPlayerFormPageState extends State<AddPlayerFormPage> {
       for(int i = 0; i < data.length; i++){
         _allPlayers.add(data[i]['name']);
       }
-      // allPlayers.sort()
+       _allPlayers.sort((a, b) => a.substring(a.indexOf(' ') + 1).toLowerCase().compareTo(b.substring(b.indexOf(' ') + 1).toLowerCase()));
     } catch (exception) {
       print(exception);
     }
@@ -95,14 +95,14 @@ class _AddPlayerFormPageState extends State<AddPlayerFormPage> {
                       decoration: InputDecoration(
                         label: const Text('Nombre jugadora',),
                         suffixIcon: IconButton(
-                          icon: const Icon(Icons.clear, color: Colors.white,),
+                          icon: Icon(Icons.clear, color: Theme.of(context).colorScheme.primary,),
                           onPressed: () {
                             _formKey.currentState!.fields['playerName']?.didChange(null);
                           }
                         ),
                       ),
                       suggestionsCallback: (pattern) {
-                        return _allPlayers.where((country) => country.toLowerCase().startsWith(pattern.toLowerCase())).toList();
+                        return _allPlayers.where((player) => player.toLowerCase().startsWith(pattern.toLowerCase())).toList();
                       },
                       itemBuilder: (context, suggestion) {
                         return ListTile(
