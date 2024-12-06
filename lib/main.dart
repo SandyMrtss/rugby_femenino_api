@@ -76,10 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
-          child: Center(
+      body: Center(
             child: PlayerList(initialPlayers),
-          )
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Añadir jugadora',
