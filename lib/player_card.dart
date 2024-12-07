@@ -72,9 +72,7 @@ class _PlayerCardState extends State<PlayerCard> {
   }
 
   Widget get playerCard {
-    return Positioned(
-      right: 0.0,
-      child: SizedBox(
+    return SizedBox(
         width: 250,
         height: 115,
         child: Card(
@@ -90,13 +88,8 @@ class _PlayerCardState extends State<PlayerCard> {
                   style: const TextStyle(fontSize: 24.0),
                   overflow: TextOverflow.ellipsis,
                 ),
-                Row(
-         //         mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(widget.player.position.toString(),
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ],
+                Text(widget.player.position.toString(),
+                  style: const TextStyle(fontStyle: FontStyle.italic),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -111,7 +104,6 @@ class _PlayerCardState extends State<PlayerCard> {
             ),
           ),
         ),
-      ),
     );
   }
 
@@ -132,7 +124,7 @@ class _PlayerCardState extends State<PlayerCard> {
           child: Stack(
             children: <Widget>[
               Positioned(top: 7.5, child: playerImage),
-              playerCard,
+              Positioned(right: 0.0, child: playerCard,),
             ],
           ),
         ),

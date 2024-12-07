@@ -118,11 +118,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
     );
   }
 
-  FutureOr onGoBack(dynamic value) {
-    initState();
-    setState(() {});
-  }
-
   Widget get playerProfile {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 32.0),
