@@ -43,34 +43,36 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
+  var key = GlobalKey<ScaffoldState>();
   List<Player> initialPlayers = [Player('Alba Capell'), Player('Claudia Peña'), Player('Martina Márquez')];
 
   Future _showNewPlayerForm() async {
+    final contextMain = key.currentContext;
     var newPlayer = await Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
       return const AddPlayerFormPage();
     }));
     if(newPlayer != null){
       if(!initialPlayers.contains(newPlayer)){
         initialPlayers.add(newPlayer);
+        setState(() {});
       }
       else{
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Esta jugadora ya estaba añadida'),
-              duration: Duration(seconds: 3),
-              backgroundColor: Colors.red,
-              showCloseIcon: true,
-            )
-        );
+        if(contextMain != null && contextMain.mounted){
+          ScaffoldMessenger.of(contextMain).showSnackBar(
+              const SnackBar(
+                content: Text('Esta jugadora ya estaba añadida'),
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.red,
+                showCloseIcon: true,
+              )
+          );
+        }
       }
     }
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    var key = GlobalKey<ScaffoldState>();
     return Scaffold(
       key: key,
       appBar: AppBar(
